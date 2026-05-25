@@ -16,7 +16,7 @@ const Schema = mongoose.Schema;
 
 const postSchema = new Schema(
   {
-    title: { type: String, required: true, trim: true },
+    title: { type: String, required: true, trim: true, maxLength: 100 },
     body: { type: String, required: false, nullable: true, trim: true },
     imageURL: { type: String, required: false, nullable: true, trim: true },
     authorID: { type: Schema.Types.ObjectId, ref: "User", required: true },
