@@ -16,10 +16,29 @@ const Schema = mongoose.Schema;
 
 const postSchema = new Schema(
   {
-    title: { type: String, required: true, trim: true, maxLength: 100 },
-    body: { type: String, required: false, nullable: true, trim: true },
-    imageURL: { type: String, required: false, nullable: true, trim: true },
-    authorID: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    title: {
+      type: String,
+      required: [true, "Title is required"],
+      trim: true,
+      maxLength: [100, "Title cannot exceed 100 characters"],
+    },
+    body: {
+      type: String,
+      required: false,
+      nullable: true,
+      trim: true,
+    },
+    imageURL: {
+      type: String,
+      required: false,
+      nullable: true,
+      trim: true,
+    },
+    authorID: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     upvotes: { type: [Schema.Types.ObjectId], default: [] },
     downvotes: { type: [Schema.Types.ObjectId], default: [] },
     commentCount: { type: Number, default: 0 },

@@ -11,7 +11,7 @@ const commentSchema = new Schema(
       ref: "Comment",
       required: false,
     },
-    body: { type: String, required: true },
+    body: { type: String, required: [true, "Comment body cannot be empty"] },
   },
   { timestamps: true },
 );
