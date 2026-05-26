@@ -2,19 +2,30 @@ require("dotenv").config();
 
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const homeRoutes = require("./routes/homeRoute");
+const userRoutes = require("./routes/userRoute");
+const authRoutes = require("./routes/authRoute");
 
 const app = express();
+const corsOptions = {
+  origin: "http://localhost:5173",
+  optionsSuccessStatus: 200,
+};
 
+app.use(cors(corsOptions));
 app.use(express.json());
 
+app.use("/api/home", homeRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/auth", authRoutes);
+
 app.use((req, res, next) => {
-  console.log(`${req.method} ${req.path}`);
+  console.log(`${req.method} ${req.url}`);
+  console.log(`${req.ip}`);
   next();
 });
-
-app.use("/api/home", homeRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI, {})
