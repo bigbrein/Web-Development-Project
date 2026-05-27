@@ -1,19 +1,10 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
-    username: {
-      type: String,
-      required: [true, "Username is required"],
-      unique: true,
-      trim: true,
-      minLength: [3, "Username must be at least 3 characters long"],
-      maxLength: [32, "Username cannot exceed 32 characters"],
-    },
-    profileImgURL: { type: String, required: false },
-    admin: { type: Boolean, default: false, required: false },
     email: {
       type: String,
       required: [true, "Email is required"],
@@ -28,16 +19,39 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: [true, "Password is required"],
-      minLength: [8, "Password must be at least 8 characters long"],
+      minlength: [8, "Password must be at least 8 characters long"],
       match: [
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
         "Password must contain at least one uppercase letter, one lowercase letter, and one number",
       ],
     },
   },
-  {
-    timestamps: true,
-  },
+  { timestamps: true },
 );
+
+userSchema.statics.signup = async function (email, password) {
+  const exists = await this.findOne({ email });
+
+  if (exists) {
+    throw Error("Email already in use");
+  }
+
+  const saltRounds = 10;
+
+  const salt = await bcrypt.genSalt(saltRounds).catch((err) => {
+    throw Error("Error generating salt for password hashing");
+  });
+
+  password = await bcrypt.hash(password, salt).catch((err) => {
+    throw Error("Error hashing password");
+  });
+
+  const newUser = await this.create({
+    email: email,
+    password: password,
+  });
+
+  return newUser;
+};
 
 module.exports = mongoose.model("User", userSchema);

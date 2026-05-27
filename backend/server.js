@@ -4,7 +4,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
-const homeRoutes = require("./routes/homeRoute");
+const postRoutes = require("./routes/postRoute");
 const userRoutes = require("./routes/userRoute");
 const authRoutes = require("./routes/authRoute");
 
@@ -17,13 +17,12 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-app.use("/api/home", homeRoutes);
+app.use("/api/posts", postRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
-  console.log(`${req.ip}`);
   next();
 });
 

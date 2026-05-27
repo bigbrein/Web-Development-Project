@@ -14,36 +14,34 @@ const Schema = mongoose.Schema;
  * - timestamps: true (createdAt and updatedAt)
  */
 
-const postSchema = new Schema(
-  {
-    title: {
-      type: String,
-      required: [true, "Title is required"],
-      trim: true,
-      maxLength: [100, "Title cannot exceed 100 characters"],
-    },
-    body: {
-      type: String,
-      required: false,
-      nullable: true,
-      trim: true,
-    },
-    imageURL: {
-      type: String,
-      required: false,
-      nullable: true,
-      trim: true,
-    },
-    authorID: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    upvotes: { type: [Schema.Types.ObjectId], default: [] },
-    downvotes: { type: [Schema.Types.ObjectId], default: [] },
-    commentCount: { type: Number, default: 0 },
+const postSchema = new Schema({
+  title: {
+    type: String,
+    required: [true, "Title is required"],
+    trim: true,
+    maxlength: [100, "Title cannot exceed 100 characters"],
   },
-  { timestamps: true },
-);
+  body: {
+    type: String,
+    required: false,
+    trim: true,
+    default: "",
+  },
+  imageURL: {
+    type: String,
+    required: false,
+    trim: true,
+    default: "",
+  },
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "UserInfo",
+    required: true,
+  },
+  upvotes: { type: [Schema.Types.ObjectId], default: [] },
+  downvotes: { type: [Schema.Types.ObjectId], default: [] },
+  commentCount: { type: Number, default: 0 },
+  createdAt: { type: Date, default: Date.now },
+});
 
 module.exports = mongoose.model("Post", postSchema);
