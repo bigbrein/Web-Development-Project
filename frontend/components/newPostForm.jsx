@@ -13,20 +13,20 @@ const NewPostForm = () => {
   return (
     <>
       <form
-        className="mx-auto mt-10 p-5 rounded-lg flex flex-col gap-5 w-3/4 max-w-[800px]"
+        className="mx-auto mt-10 p-5 rounded-lg flex flex-col gap-5 w-3/4 max-w-200"
         onSubmit={handleSubmit}
       >
         <p className="text-3xl text-start font-bold">Create Post</p>
         <input
           type="text"
           placeholder="Title*"
-          className="bg-gray border-1 border-gray-300 rounded-lg p-2"
+          className="bg-gray border border-gray-300 rounded-lg p-2"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
         />
         <textarea
-          className="border-1 border-gray-300 rounded-lg p-2 min-h-[200px]"
+          className="border border-gray-300 rounded-lg p-2 min-h-50"
           placeholder="Body Text (Optional)"
           value={content}
           onChange={(e) => setContent(e.target.value)}
