@@ -11,7 +11,9 @@ const userInfoSchema = new Schema(
     },
     username: {
       type: String,
-      required: true,
+      required: function () {
+        return this.role === "admin" || this.role === "user";
+      },
       unique: true,
     },
     profileImgURL: {
@@ -20,7 +22,11 @@ const userInfoSchema = new Schema(
       nullable: true,
       trim: true,
     },
-    admin: { type: Boolean, default: false, required: false },
+    role: {
+      type: String,
+      enum: ["user", "admin", "guest"],
+      default: "user",
+    },
   },
   { timestamps: true },
 );

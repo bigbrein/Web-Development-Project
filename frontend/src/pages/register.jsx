@@ -1,11 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSignup } from "../hooks/useSignup.js";
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext.js";
 
 import Navbar from "../components/partials/navbar.jsx";
 
 import "../styles.css";
 
 function RegisterPage() {
+  const { user } = useAuthContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -21,6 +32,12 @@ function RegisterPage() {
     }
 
     await signup(email.trim(), password.trim());
+  };
+
+  const guestLoginHandler = async (e) => {
+    e.preventDefault();
+
+    console.log("Logging in as guest...");
   };
 
   return (
@@ -86,9 +103,12 @@ function RegisterPage() {
             </a>
           </p>
           <p className="text-white font-bold">OR</p>
-          <a className="font-bold bg-blue-500 text-white hover:bg-blue-600 py-2 px-4 rounded focus:outline-none focus:bg-blue-700">
+          <button
+            className="font-bold bg-blue-500 text-white hover:bg-blue-600 py-2 px-4 rounded focus:outline-none focus:bg-blue-700"
+            onClick={(e) => guestLoginHandler(e)}
+          >
             Login as guest
-          </a>
+          </button>
           <br />
           <br />
           <br />

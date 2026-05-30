@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
 import PostDetails from "../components/postDetails";
 import { useAuthContext } from "../hooks/useAuthContext.js";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
-  const [posts, setPosts] = useState(null);
   const { user } = useAuthContext();
+  const navigate = useNavigate();
+
+  const [posts, setPosts] = useState(null);
 
   useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+
     const fetchPosts = async () => {
       const response = await fetch("http://localhost:3000/api/posts", {
         headers: {

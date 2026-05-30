@@ -1,10 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLogin } from "../hooks/useLogin.js";
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext.js";
 
 import "../styles.css";
 import Navbar from "../components/partials/navbar";
 
 function LoginPage() {
+  const { user } = useAuthContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -13,7 +24,15 @@ function LoginPage() {
   const submitHandler = async (e, email, password) => {
     e.preventDefault();
 
-    await login(email.trim(), password.trim());
+    const { success } = await login(email.trim(), password.trim());
+
+    if (!success) {
+      setPassword("");
+    }
+
+    if (user) {
+      navigate("/");
+    }
   };
 
   return (
@@ -61,13 +80,22 @@ function LoginPage() {
             </p>
           </div>
           {error && <p className="text-red-300">{error}</p>}
-          <button
-            disabled={isLoading}
-            className="bg-blue-500 transition-colors hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            type="submit"
-          >
-            Login
-          </button>
+          {isLoading ? (
+            <button
+              disabled
+              className="bg-blue-900 transition-colors text-white font-bold py-2 px-4 rounded focus:outline-none"
+            >
+              Logging in...
+            </button>
+          ) : (
+            <button
+              disabled={isLoading}
+              className="bg-blue-500 transition-colors hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              type="submit"
+            >
+              Login
+            </button>
+          )}
           <p>
             Don't have an account?{" "}
             <a href="/register" className="text-blue-500 hover:text-blue-700">
