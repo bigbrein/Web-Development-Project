@@ -1,26 +1,9 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-const handleError = (err) => {
-  let errors = { email: "", password: "" };
-
-  if (err.code === 11000) {
-    email = "Email already registered";
-    return errors;
-  }
-
-  if (
-    typeof err.message === "string" &&
-    err.message.toLowerCase().includes("user validation failed")
-  ) {
-    Object.values(err.errors).forEach(({ properties }) => {
-      errors[properties.path] = properties.message;
-    });
-  } else {
-    return err.message || "Something went wrong";
-  }
-
-  return errors;
+const createToken = (userId) => {
+  return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "7d" });
 };
 
 const registerGet = (req, res) => {
@@ -32,10 +15,11 @@ const registerPost = async (req, res) => {
 
   try {
     const newUser = await User.signup(email, password);
-    return res.status(201).json({ user: newUser });
+    const token = createToken(newUser._id);
+
+    return res.status(201).json({ email: newUser.email, token: token });
   } catch (err) {
-    const errors = handleError(err);
-    return res.status(400).json({ errors });
+    return res.status(400).json({ err: err.message });
   }
 };
 
@@ -47,20 +31,12 @@ const loginPost = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ message: "Invalid credentials" });
-    }
+    const user = await User.login(email, password);
+    const token = createToken(user._id);
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
-
-    return res.status(200).json({ message: "Login successful", user });
+    return res.status(200).json({ email: user.email, token: token });
   } catch (err) {
-    const errors = handleError(err);
-    return res.status(400).json({ errors });
+    return res.status(400).json({ err: err.message });
   }
 };
 

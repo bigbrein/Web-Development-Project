@@ -1,7 +1,7 @@
 const PostDetails = ({ post }) => {
   return (
     <>
-      <h2>{post.name}</h2>
+      <h2>{post.title}</h2>
       <p>{post._id}</p>
     </>
   );

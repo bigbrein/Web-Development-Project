@@ -30,14 +30,26 @@ const userSchema = new Schema(
 );
 
 userSchema.statics.signup = async function (email, password) {
-  const exists = await this.findOne({ email });
+  if (!email.trim() || !password.trim()) {
+    throw Error("All fields are required");
+  }
 
+  if (password.trim().length < 8) {
+    throw Error("Password must be at least 8 characters long");
+  }
+
+  if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+/.test(password.trim())) {
+    throw Error(
+      "Password must contain at least one uppercase letter, one lowercase letter, and one number",
+    );
+  }
+
+  const exists = await this.findOne({ email });
   if (exists) {
     throw Error("Email already in use");
   }
 
   const saltRounds = 10;
-
   const salt = await bcrypt.genSalt(saltRounds).catch((err) => {
     throw Error("Error generating salt for password hashing");
   });
@@ -52,6 +64,24 @@ userSchema.statics.signup = async function (email, password) {
   });
 
   return newUser;
+};
+
+userSchema.statics.login = async function (email, password) {
+  if (!email.trim() || !password.trim()) {
+    throw Error("All fields are required");
+  }
+
+  const user = await this.findOne({ email });
+  if (!user) {
+    throw Error("Invalid credentials");
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    throw Error("Invalid credentials");
+  }
+
+  return user;
 };
 
 module.exports = mongoose.model("User", userSchema);

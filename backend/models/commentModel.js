@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const commentSchema = new Schema(
   {
     parentPost: { type: Schema.Types.ObjectId, ref: "Post", required: true },
-    author: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    author: { type: Schema.Types.ObjectId, ref: "UserInfo", required: true },
     parentCommentID: {
       type: Schema.Types.ObjectId,
       ref: "Comment",
