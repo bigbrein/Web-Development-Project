@@ -1,7 +1,8 @@
 const express = require("express");
+const requireAuth = require("../middleware/requireAuth");
 
 const {
-  getUserByUsername,
+  getUserByID,
   getUserPostsByUsername,
   deleteUserPostById,
   updateUserByUsername,
@@ -9,9 +10,9 @@ const {
 
 const router = express.Router();
 
-router.get("/:username", getUserByUsername);
+router.get("/:id", getUserByID);
 router.get("/:username/posts", getUserPostsByUsername);
-router.put("/:username", updateUserByUsername);
-router.delete("/:username/posts/:id", deleteUserPostById);
+router.put("/:username", requireAuth, updateUserByUsername);
+router.delete("/:username/posts/:id", requireAuth, deleteUserPostById);
 
 module.exports = router;

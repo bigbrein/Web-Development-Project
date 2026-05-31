@@ -8,6 +8,7 @@ const userInfoSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
+      unique: true,
     },
     username: {
       type: String,
@@ -19,7 +20,7 @@ const userInfoSchema = new Schema(
     profileImgURL: {
       type: String,
       required: false,
-      nullable: true,
+      default: "",
       trim: true,
     },
     role: {
@@ -30,5 +31,28 @@ const userInfoSchema = new Schema(
   },
   { timestamps: true },
 );
+
+userInfoSchema.statics.createUserInfo = async function (
+  userId,
+  username,
+  profileImgURL,
+) {
+  if (!userId) {
+    throw Error(`Author ID cannot be empty`);
+  }
+
+  const exists = await this.findOne({ username });
+  if (exists) {
+    throw Error(`Username is already taken`);
+  }
+
+  const newUserInfo = await this.create({
+    user: userId,
+    username: username,
+    profileImgURL: profileImgURL,
+  });
+
+  return newUserInfo;
+};
 
 module.exports = mongoose.model("UserInfo", userInfoSchema);

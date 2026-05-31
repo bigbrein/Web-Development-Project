@@ -1,13 +1,25 @@
 import { useState } from "react";
+import { useCreatePost } from "../hooks/useCreatePost.js";
+import { useNavigate } from "react-router-dom";
 
 const NewPostForm = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const { createPost, isLoading, error } = useCreatePost();
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Title:", title);
-    console.log("Content:", content);
+
+    const { success } = await createPost(title.trim(), content.trim());
+
+    if (success) {
+      setTitle("");
+      setContent("");
+
+      navigate("/");
+    }
   };
 
   return (
@@ -34,9 +46,11 @@ const NewPostForm = () => {
         <button
           type="submit"
           className="bg-blue-500 text-white py-2 px-4 rounded-lg"
+          disabled={isLoading}
         >
-          Post
+          {isLoading ? "Posting..." : "Post"}
         </button>
+        {error && <p className="text-red-500">{error}</p>}
       </form>
     </>
   );

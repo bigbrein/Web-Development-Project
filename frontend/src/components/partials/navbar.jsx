@@ -13,15 +13,29 @@ function Navbar() {
 
   return (
     <>
-      <div className="">
-        <nav className="flex items-center p-5">
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=add_circle"
+      />
+
+      <div className="bg-gray-800">
+        <nav className="flex items-center p-3">
           <div className="text-2xl font-bold text-white">
             <Link to="/">HobbyHub</Link>
           </div>
           <ul className="flex gap-5 ms-auto items-center">
-            <li className="text-white">Home </li>
-            <li className="text-white">About</li>
-            <li className="text-white">Contact</li>
+            {user && (
+              <li className="text-white">
+                <button className="text-white font-bold py-2 px-4 rounded hover:ring-2 hover:ring-white-500 focus:ring-opacity-50">
+                  <div className="flex items-center gap-1">
+                    <span className="material-symbols-outlined">
+                      add_circle
+                    </span>
+                    <Link to="/create">Create Post</Link>
+                  </div>
+                </button>
+              </li>
+            )}
             {!user && (
               <li className="text-white">
                 <Link

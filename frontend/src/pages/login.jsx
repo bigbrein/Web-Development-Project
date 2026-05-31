@@ -29,10 +29,6 @@ function LoginPage() {
     if (!success) {
       setPassword("");
     }
-
-    if (user) {
-      navigate("/");
-    }
   };
 
   return (

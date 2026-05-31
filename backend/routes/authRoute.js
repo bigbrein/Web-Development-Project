@@ -1,19 +1,18 @@
 const {
-  registerGet,
-  registerPost,
-  loginGet,
-  loginPost,
-  logoutPost,
+  register,
+  login,
+  logout,
+  completeUserRegistration,
 } = require("../controllers/authController");
+const requireAuth = require("../middleware/requireAuth");
 
 const express = require("express");
 
 const router = express.Router();
 
-router.get("/register", registerGet);
-router.post("/register", registerPost);
-router.get("/login", loginGet);
-router.post("/login", loginPost);
-router.post("/logout", logoutPost);
+router.post("/register/complete", requireAuth, completeUserRegistration);
+router.post("/register", register);
+router.post("/login", login);
+router.post("/logout", logout);
 
 module.exports = router;

@@ -33,7 +33,7 @@ const postSchema = new Schema({
     trim: true,
     default: "",
   },
-  author: {
+  authorID: {
     type: Schema.Types.ObjectId,
     ref: "UserInfo",
     required: true,

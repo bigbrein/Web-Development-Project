@@ -13,7 +13,7 @@ function RegisterPage() {
 
   useEffect(() => {
     if (user) {
-      navigate("/");
+      navigate("/register/complete");
     }
   }, [user, navigate]);
 
@@ -31,7 +31,11 @@ function RegisterPage() {
       return;
     }
 
-    await signup(email.trim(), password.trim());
+    const { success } = await signup(email.trim(), password.trim());
+
+    if (success) {
+      navigate("/register/complete");
+    }
   };
 
   const guestLoginHandler = async (e) => {

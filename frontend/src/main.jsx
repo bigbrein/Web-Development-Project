@@ -10,14 +10,20 @@ import RegisterPage from "./pages/register.jsx";
 import LoginPage from "./pages/login.jsx";
 import HomePage from "./pages/home.jsx";
 import NotFoundPage from "./pages/notFoundPage.jsx";
+import Profile from "./pages/profile.jsx";
+import InputInfo from "./pages/inputInfo.jsx";
+import NewPostForm from "./components/newPostForm.jsx";
 
 import { AuthContextProvider } from "./context/authContext.jsx";
 
 const router = createBrowserRouter([
   { path: "/", element: <App /> },
   { path: "/register", element: <RegisterPage /> },
+  { path: "/register/complete", element: <InputInfo /> },
   { path: "/login", element: <LoginPage /> },
   { path: "/home", element: <HomePage /> },
+  { path: "/user/:username", element: <Profile /> },
+  { path: "/create", element: <NewPostForm /> },
   { path: "*", element: <NotFoundPage /> },
 ]);
 

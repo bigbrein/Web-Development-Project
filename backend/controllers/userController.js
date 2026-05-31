@@ -1,26 +1,40 @@
 const User = require("../models/userModel");
 const Post = require("../models/postModel");
+const UserInfo = require("../models/userInfoModel");
 
-const getUserByUsername = (req, res) => {
-  const { username } = req.params;
+const getUserByID = async (req, res) => {
+  const { id } = req.params;
 
-  const user = User.findOne({ username });
+  try {
+    const user = await UserInfo.findOne({ _id: id }).select(
+      "username profileImgURL",
+    );
 
-  if (!user) {
-    return res.status(404).json({ error: "User not found" });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
-
-  res.status(200).json(user);
 };
 
-const getUserPostsByUsername = (req, res) => {
-  const posts = Post.find({ authorID: req.user._id }).sort({ createdAt: -1 });
+const getUserPostsByUsername = async (req, res) => {
+  try {
+    const posts = await Post.find({ authorID: req.user._id }).sort({
+      createdAt: -1,
+    });
 
-  if (!posts) {
-    return res.status(404).json({ error: "No posts found for this user" });
+    if (!posts) {
+      return res.status(404).json({ error: "No posts found for this user" });
+    }
+
+    return res.status(200).json(posts);
+  } catch (error) {
+    console.error("Error fetching user posts:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
-
-  res.status(200).json(posts);
 };
 
 const updateUserByUsername = (req, res) => {
@@ -44,7 +58,7 @@ const deleteUserPostById = (req, res) => {
 };
 
 module.exports = {
-  getUserByUsername,
+  getUserByID,
   getUserPostsByUsername,
   updateUserByUsername,
   deleteUserPostById,

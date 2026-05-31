@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const UserInfo = require("./userInfoModel");
 
 const Schema = mongoose.Schema;
 
@@ -28,6 +29,17 @@ const userSchema = new Schema(
   },
   { timestamps: true },
 );
+
+userSchema.pre("deleteOne", async function (next) {
+  try {
+    const userId = this._id;
+    console.log("userModel.js: Deleting user with ID:", userId); // Debugging log
+    await UserInfo.deleteOne({ userId });
+    next();
+  } catch (err) {
+    return next(err);
+  }
+});
 
 userSchema.statics.signup = async function (email, password) {
   if (!email.trim() || !password.trim()) {
@@ -73,7 +85,7 @@ userSchema.statics.login = async function (email, password) {
 
   const user = await this.findOne({ email });
   if (!user) {
-    throw Error("Invalid credentials");
+    throw Error("Email not registered");
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
