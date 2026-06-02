@@ -20,7 +20,9 @@ const completeUserRegistration = async (req, res) => {
       profileImgURL,
     );
     return res.status(201).json({
-      user: newUserInfo.username,
+      id: _id,
+      username: newUserInfo.username,
+      profileImgURL: newUserInfo.profileImgURL,
       token: token,
     });
   } catch (err) {
@@ -35,7 +37,12 @@ const register = async (req, res) => {
     const newUser = await User.signup(email, password);
     const token = createToken(newUser._id);
 
-    return res.status(201).json({ user: newUser.email, token: token });
+    return res.status(201).json({
+      id: newUser._id,
+      username: null,
+      email: newUser.email,
+      token: token,
+    });
   } catch (err) {
     return res.status(400).json({ err: err.message });
   }
@@ -49,14 +56,24 @@ const login = async (req, res) => {
     const token = createToken(user._id);
 
     const userInfo = await UserInfo.findOne({ user: user._id }).select(
-      "username",
+      "username profileImgURL",
     );
 
     if (!userInfo) {
-      return res.status(200).json({ user: user.email, token: token });
+      return res.status(200).json({
+        id: user._id,
+        username: null,
+        email: user.email,
+        token: token,
+      });
     }
 
-    return res.status(200).json({ user: userInfo.username, token: token });
+    return res.status(200).json({
+      id: user._id,
+      username: userInfo.username,
+      profileImgURL: userInfo.profileImgURL,
+      token: token,
+    });
   } catch (err) {
     return res.status(400).json({ err: err.message });
   }

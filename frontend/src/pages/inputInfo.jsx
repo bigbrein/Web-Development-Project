@@ -19,7 +19,7 @@ function InputInfo() {
     if (!user) {
       navigate("/login");
       return;
-    } else if (user.username) {
+    } else if (user.username !== null) {
       navigate("/");
       return;
     }

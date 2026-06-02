@@ -34,7 +34,7 @@ const Posts = () => {
 
   return (
     <>
-      <div className="flex flex-1 flex-col max-w-2xl mx-auto gap-4 py-4">
+      <div className="flex flex-1 flex-col max-w-2xl mx-auto py-4">
         {posts &&
           posts.map((post) => <PostDetails key={post._id} post={post} />)}
       </div>

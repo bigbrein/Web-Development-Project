@@ -7,6 +7,7 @@ const cors = require("cors");
 const postRoutes = require("./routes/postRoute");
 const userRoutes = require("./routes/userRoute");
 const authRoutes = require("./routes/authRoute");
+const commentRoutes = require("./routes/commentRoute");
 
 const requireAuth = require("./middleware/requireAuth.js");
 
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use("/api/posts", postRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/comments", commentRoutes);
 
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);

@@ -21,8 +21,18 @@ const getUserByID = async (req, res) => {
 };
 
 const getUserPostsByUsername = async (req, res) => {
+  const { username } = req.params;
+
   try {
-    const posts = await Post.find({ authorID: req.user._id }).sort({
+    const authorID = await UserInfo.findOne({ username: username }).select(
+      "id",
+    );
+
+    if (!authorID) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const posts = await Post.find({ authorID: authorID }).sort({
       createdAt: -1,
     });
 
@@ -32,7 +42,7 @@ const getUserPostsByUsername = async (req, res) => {
 
     return res.status(200).json(posts);
   } catch (error) {
-    console.error("Error fetching user posts:", error);
+    console.error("userController.js: Error:", error.message);
     return res.status(500).json({ error: "Internal server error" });
   }
 };

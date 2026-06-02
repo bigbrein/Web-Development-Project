@@ -11,6 +11,8 @@ const HomePage = () => {
   useEffect(() => {
     if (!user) {
       navigate("/login");
+    } else if (user.username === null) {
+      navigate("/register/complete");
     }
   }, [navigate, user]);
 
