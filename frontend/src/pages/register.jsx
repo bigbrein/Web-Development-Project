@@ -47,78 +47,123 @@ function RegisterPage() {
   return (
     <>
       <Navbar />
-      <div className="w-full max-h-screen rounded-lg flex flex-1">
-        <form
-          className="my-auto mx-auto p-8 rounded-md flex flex-col gap-5 w-lg"
-          onSubmit={(e) => submitHandler(e)}
-        >
-          <h2 className="text-3xl font-bold text-white">Register</h2>
-          <div className="mt-8">
-            <input
-              className="p-2 border border-gray-300 rounded focus:outline-none w-full"
-              type="email"
-              id="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-              required
-            />
+      <div className="flex-1 flex items-center justify-center px-4 py-12">
+        <div className="w-full max-w-md">
+          <div className="bg-white dark:bg-gray-900 rounded-lg p-8 border border-gray-200 dark:border-gray-800 shadow-sm">
+            {/* Header */}
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                HobbyHub
+              </h1>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                Create Account
+              </h2>
+              <p className="text-gray-600 dark:text-gray-400 mt-2">
+                Join our hobby community
+              </p>
+            </div>
+
+            {/* Form */}
+            <form className="space-y-4" onSubmit={(e) => submitHandler(e)}>
+              {/* Email Input */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  Email Address
+                </label>
+                <input
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  type="email"
+                  id="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+
+              {/* Password Input */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  Password
+                </label>
+                <input
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  type="password"
+                  id="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+
+              {/* Confirm Password Input */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  Confirm Password
+                </label>
+                <input
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  type="password"
+                  id="confirmPassword"
+                  placeholder="••••••••"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+              </div>
+
+              {/* Error Message */}
+              {error && (
+                <div className="p-3 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
+                  <p className="text-sm text-red-600 dark:text-red-400">
+                    {error}
+                  </p>
+                </div>
+              )}
+
+              {/* Submit Button */}
+              <button
+                disabled={isLoading}
+                className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-2 px-4 rounded-lg transition-colors"
+                type="submit"
+              >
+                {isLoading ? "Creating account..." : "Create Account"}
+              </button>
+            </form>
+
+            {/* Divider */}
+            <div className="mt-6 mb-6 relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400">
+                  OR
+                </span>
+              </div>
+            </div>
+
+            {/* Guest Login Button */}
+            <button
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-900 dark:text-white font-semibold transition-colors"
+              onClick={(e) => guestLoginHandler(e)}
+            >
+              Continue as Guest
+            </button>
+
+            {/* Login Link */}
+            <p className="mt-6 text-gray-600 dark:text-gray-400">
+              Already have an account?{" "}
+              <a
+                href="/login"
+                className="font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+              >
+                Sign in
+              </a>
+            </p>
           </div>
-          <div className="text-start">
-            <input
-              className="p-2 border border-gray-300 rounded focus:outline-none w-full"
-              type="password"
-              id="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-              required
-            />
-          </div>
-          <div className="text-start">
-            <input
-              className="p-2 border border-gray-300 rounded focus:outline-none w-full"
-              type="password"
-              id="confirmPassword"
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={(e) => {
-                setConfirmPassword(e.target.value);
-              }}
-              required
-            />
-          </div>
-          {error && <p className="text-red-300">{error}</p>}
-          <button
-            disabled={isLoading}
-            className="bg-blue-500 transition-colors hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:bg-blue-700"
-            type="submit"
-          >
-            Register
-          </button>
-          <p>
-            Already have an account?{" "}
-            <a href="/login" className="text-blue-500 hover:text-blue-700">
-              Login here!
-            </a>
-          </p>
-          <p className="text-white font-bold">OR</p>
-          <button
-            className="font-bold bg-blue-500 text-white hover:bg-blue-600 py-2 px-4 rounded focus:outline-none focus:bg-blue-700"
-            onClick={(e) => guestLoginHandler(e)}
-          >
-            Login as guest
-          </button>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-        </form>
+        </div>
       </div>
     </>
   );
