@@ -1,11 +1,11 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
 import "./index.css";
 import "./assets/default-profile.png";
 
 import App from "./App.jsx";
-
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import RegisterPage from "./pages/register.jsx";
 import LoginPage from "./pages/login.jsx";
@@ -16,6 +16,7 @@ import InputInfo from "./pages/inputInfo.jsx";
 import NewPostForm from "./components/newPostForm.jsx";
 
 import { AuthContextProvider } from "./context/authContext.jsx";
+import { CommentsProvider } from "./context/CommentsContext.jsx";
 
 const router = createBrowserRouter([
   { path: "/", element: <App /> },
@@ -23,7 +24,7 @@ const router = createBrowserRouter([
   { path: "/register/complete", element: <InputInfo /> },
   { path: "/login", element: <LoginPage /> },
   { path: "/home", element: <HomePage /> },
-  { path: "/user/:username", element: <Profile /> },
+  { path: "/users/:username", element: <Profile /> },
   { path: "/create", element: <NewPostForm /> },
   { path: "*", element: <NotFoundPage /> },
 ]);
@@ -31,7 +32,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthContextProvider>
-      <RouterProvider router={router} />
+      <CommentsProvider>
+        <RouterProvider router={router} />
+      </CommentsProvider>
     </AuthContextProvider>
   </StrictMode>,
 );

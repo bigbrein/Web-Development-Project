@@ -7,7 +7,7 @@ export const useCreatePost = () => {
 
   const { user } = useAuthContext();
 
-  const createPost = async (title, content) => {
+  const createPost = async (title, content, imageURL = null) => {
     setIsLoading(true);
     setError(null);
 
@@ -18,7 +18,11 @@ export const useCreatePost = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user.token}`,
         },
-        body: JSON.stringify({ title, content }),
+        body: JSON.stringify({
+          title,
+          content,
+          imageURL: imageURL || undefined,
+        }),
       });
 
       const data = await response.json();

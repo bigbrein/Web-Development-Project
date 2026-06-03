@@ -34,76 +34,118 @@ function LoginPage() {
   return (
     <>
       <Navbar />
-      <div className="w-full max-h-screen rounded-lg flex flex-1">
-        <form
-          className="my-auto mx-auto p-8 rounded-md flex flex-col gap-5 w-lg"
-          onSubmit={(e) => submitHandler(e, email, password)}
-        >
-          <h2 className="text-3xl font-bold text-white">Login</h2>
-          <div className="mt-8">
-            <input
-              className="p-2 border border-gray-300 rounded focus:outline-none w-full"
-              type="email"
-              id="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-              required
-            />
-          </div>
-          <div className="mb-3 text-start">
-            <input
-              className="p-2 border border-gray-300 rounded focus:outline-none w-full"
-              type="password"
-              id="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-              required
-            />
-            <p className="mt-1 text-sm text-end ">
-              Forgot Password?{" "}
+      <div className="flex-1 flex items-center justify-center px-4 py-12">
+        <div className="w-full max-w-md">
+          <div className="bg-white dark:bg-gray-900 rounded-lg p-8 border border-gray-200 dark:border-gray-800 shadow-sm">
+            {/* Header */}
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                HobbyHub
+              </h1>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                Sign In
+              </h2>
+              <p className="text-gray-600 dark:text-gray-400 mt-2">
+                Welcome back to your hobbies
+              </p>
+            </div>
+
+            {/* Form */}
+            <form
+              className="space-y-4"
+              onSubmit={(e) => submitHandler(e, email, password)}
+            >
+              {/* Email Input */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  Email Address
+                </label>
+                <input
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  type="email"
+                  id="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+
+              {/* Password Input */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                    Password
+                  </label>
+                  <a
+                    href="https://google.com"
+                    className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+                  >
+                    Forgot?
+                  </a>
+                </div>
+                <input
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  type="password"
+                  id="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+
+              {/* Error Message */}
+              {error && (
+                <div className="p-3 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
+                  <p className="text-sm text-red-600 dark:text-red-400">
+                    {error}
+                  </p>
+                </div>
+              )}
+
+              {/* Submit Button */}
+              {isLoading ? (
+                <button
+                  disabled
+                  className="w-full bg-gray-400 text-white font-bold py-2 px-4 rounded-lg cursor-not-allowed"
+                >
+                  Logging in...
+                </button>
+              ) : (
+                <button
+                  disabled={isLoading}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors"
+                  type="submit"
+                >
+                  Sign In
+                </button>
+              )}
+            </form>
+
+            {/* Divider */}
+            <div className="mt-6 mb-6 relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400">
+                  New to HobbyHub?
+                </span>
+              </div>
+            </div>
+
+            {/* Sign Up Link */}
+            <p className="text-gray-600 dark:text-gray-400">
               <a
-                href="https://google.com"
-                className="text-blue-500 hover:text-blue-700 cursor-pointer"
+                href="/register"
+                className="font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
               >
-                Click here!
+                Create an account
               </a>
             </p>
           </div>
-          {error && <p className="text-red-300">{error}</p>}
-          {isLoading ? (
-            <button
-              disabled
-              className="bg-blue-900 transition-colors text-white font-bold py-2 px-4 rounded focus:outline-none"
-            >
-              Logging in...
-            </button>
-          ) : (
-            <button
-              disabled={isLoading}
-              className="bg-blue-500 transition-colors hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              type="submit"
-            >
-              Login
-            </button>
-          )}
-          <p>
-            Don't have an account?{" "}
-            <a href="/register" className="text-blue-500 hover:text-blue-700">
-              Register here!
-            </a>
-          </p>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-        </form>
+        </div>
       </div>
     </>
   );
